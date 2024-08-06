@@ -1,0 +1,28 @@
+version: "3"
+name: graph-rag-experiment
+
+services:
+  neo4j:
+    image: neo4j:latest
+    container_name: graph-rag-experiment_neo4j
+    volumes:
+      - $PWD/neo4j/data:/data
+      - $PWD/neo4j/logs:/logs
+      - $PWD/neo4j/plugins:/plugins
+      - $PWD/neo4j/import:/import
+      - $PWD/neo4j/init:/init
+    ports:
+      - 7474:7474
+      - 7687:7687
+    environment:
+      - NEO4J_AUTH=neo4j/qlonolink
+      - NEO4JLABS_PLUGINS=["apoc"]
+      - NEO4J_apoc_export_file_enabled=true
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_apoc_uuid_enabled=true
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      - NEO4J_dbms_security_procedures_whitelist=apoc.*
+    networks:
+      - local
+networks:
+  local:
